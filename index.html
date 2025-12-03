@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de Enlatados Procesados Térmicamente</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .header {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #667eea;
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      color: #666;
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .module {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .module-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .module-title {
+      color: #333;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      color: #667eea;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .section-description {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .save-indicator {
+      font-size: 0.85rem;
+      color: #28a745;
+      margin-top: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .save-indicator.show {
+      opacity: 1;
+    }
+
+    .download-section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .download-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .download-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .download-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .info-box {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .subsection {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .subsection-title {
+      color: #764ba2;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 0.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .completion-status {
+      background: #e8f4f8;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .completion-text {
+      color: #0066cc;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .module-title {
+        font-size: 1.2rem;
+      }
+
+      .download-button {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <header class="header">
+    <h1 id="course-title">Enlatados Procesados Térmicamente</h1>
+    <p class="subtitle" id="instructor-name">Guía Interactiva para Estudiantes</p>
+   </header>
+   <div class="info-box">
+    <p>📖 <strong>Instrucciones:</strong> Lee la información del libro y las referencias del profesor, luego completa cada sección con tus propias palabras. Tu progreso se guarda automáticamente.</p>
+   </div>
+   <div class="completion-status">
+    <p class="completion-text" id="completion-text">Secciones completadas: 0 de 14</p>
+   </div>
+   <main id="modules-container"><!-- Módulo 1 -->
+    <article class="module">
+     <div class="module-header"><span class="module-icon">📚</span>
+      <h2 class="module-title">Módulo 1: Fundamentos Teóricos del Enlatado</h2>
+     </div>
+     <section class="section">
+      <h3 class="section-title">1.1 Introducción y Definición</h3>
+      <p class="section-description">Explica qué es el enlatado, su importancia en la industria alimentaria y los conceptos básicos del procesamiento térmico.</p><textarea id="m1-s1" placeholder="Escribe aquí tu resumen sobre la introducción y definición del enlatado..."></textarea>
+      <div class="save-indicator" id="save-m1-s1">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">1.2 El Envase: La Primera Línea de Defensa</h3>
+      <p class="section-description">Describe las funciones del envase, los materiales utilizados y cómo protege el alimento.</p><textarea id="m1-s2" placeholder="Escribe aquí sobre las funciones y características del envase..."></textarea>
+      <div class="save-indicator" id="save-m1-s2">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">1.3 Protección Interna: Esmaltes y Lacas</h3>
+      <p class="section-description">Explica qué son los esmaltes y lacas, por qué se usan y cómo protegen los alimentos enlatados.</p><textarea id="m1-s3" placeholder="Escribe aquí sobre los recubrimientos internos del envase..."></textarea>
+      <div class="save-indicator" id="save-m1-s3">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">1.4 Clasificación Comercial (El punto crítico del pH)</h3>
+      <p class="section-description">Define la clasificación de alimentos según su pH, especialmente la diferencia entre alimentos de baja y alta acidez.</p><textarea id="m1-s4" placeholder="Escribe aquí sobre la clasificación de alimentos por pH..."></textarea>
+      <div class="save-indicator" id="save-m1-s4">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">1.5 Causas de Alteración</h3>
+      <p class="section-description">Identifica y explica las principales causas de alteración en alimentos enlatados (microbiológicas, químicas, físicas).</p><textarea id="m1-s5" placeholder="Escribe aquí sobre las causas de alteración en enlatados..."></textarea>
+      <div class="save-indicator" id="save-m1-s5">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+    </article><!-- Módulo 2 -->
+    <article class="module">
+     <div class="module-header"><span class="module-icon">📋</span>
+      <h2 class="module-title">Módulo 2: Lista Maestra de Parámetros de Control</h2>
+     </div>
+     <div class="subsection">
+      <h3 class="subsection-title">🌡️ Parámetros Térmicos</h3>
+      <section class="section">
+       <p class="section-description">Lista y explica los parámetros térmicos críticos: temperatura, tiempo, presión, valor F₀, etc.</p><textarea id="m2-s1" placeholder="Escribe aquí sobre los parámetros térmicos de control..."></textarea>
+       <div class="save-indicator" id="save-m2-s1">
+        ✓ Guardado automáticamente
+       </div>
+      </section>
+     </div>
+     <div class="subsection">
+      <h3 class="subsection-title">🧪 Parámetros Fisicoquímicos</h3>
+      <section class="section">
+       <p class="section-description">Describe los parámetros fisicoquímicos importantes: pH, °Brix, actividad de agua, viscosidad, etc.</p><textarea id="m2-s2" placeholder="Escribe aquí sobre los parámetros fisicoquímicos..."></textarea>
+       <div class="save-indicator" id="save-m2-s2">
+        ✓ Guardado automáticamente
+       </div>
+      </section>
+     </div>
+     <div class="subsection">
+      <h3 class="subsection-title">🥫 Parámetros del Envase</h3>
+      <section class="section">
+       <p class="section-description">Explica los parámetros del envase: dimensiones, espacio de cabeza, sellado, integridad, etc.</p><textarea id="m2-s3" placeholder="Escribe aquí sobre los parámetros del envase..."></textarea>
+       <div class="save-indicator" id="save-m2-s3">
+        ✓ Guardado automáticamente
+       </div>
+      </section>
+     </div>
+    </article><!-- Módulo 3 -->
+    <article class="module">
+     <div class="module-header"><span class="module-icon">🔬</span>
+      <h2 class="module-title">Módulo 3: Caso Práctico - "La Caída de la Retorta"</h2>
+     </div>
+     <div class="info-box">
+      <p><strong>Escenario:</strong> Frijoles refritos (pH &gt; 4.6). Durante la esterilización programada a 121°C, la temperatura cae a 115°C por 8 minutos debido a una falta de vapor.</p>
+     </div>
+     <section class="section">
+      <h3 class="section-title">Análisis del Problema</h3>
+      <p class="section-description">Analiza qué riesgos representa esta caída de temperatura en un alimento de baja acidez.</p><textarea id="m3-s1" placeholder="Escribe aquí tu análisis del problema..."></textarea>
+      <div class="save-indicator" id="save-m3-s1">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">Microorganismos de Riesgo</h3>
+      <p class="section-description">Identifica qué microorganismos patógenos podrían sobrevivir con este proceso térmico insuficiente.</p><textarea id="m3-s2" placeholder="Escribe aquí sobre los microorganismos de riesgo..."></textarea>
+      <div class="save-indicator" id="save-m3-s2">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">Cálculo del Valor F₀</h3>
+      <p class="section-description">Calcula o estima si el proceso alcanzó el valor F₀ mínimo requerido para esterilización comercial.</p><textarea id="m3-s3" placeholder="Escribe aquí tus cálculos y análisis del valor F₀..."></textarea>
+      <div class="save-indicator" id="save-m3-s3">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">Acciones Correctivas</h3>
+      <p class="section-description">Propón qué acciones se deben tomar con este lote y cómo prevenir esta situación en el futuro.</p><textarea id="m3-s4" placeholder="Escribe aquí las acciones correctivas propuestas..."></textarea>
+      <div class="save-indicator" id="save-m3-s4">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+     <section class="section">
+      <h3 class="section-title">Conclusiones del Caso</h3>
+      <p class="section-description">Resume las lecciones aprendidas y la importancia del control de parámetros críticos.</p><textarea id="m3-s5" placeholder="Escribe aquí tus conclusiones del caso práctico..."></textarea>
+      <div class="save-indicator" id="save-m3-s5">
+       ✓ Guardado automáticamente
+      </div>
+     </section>
+    </article>
+   </main>
+   <section class="download-section">
+    <h2 style="color: #333; margin-bottom: 1rem;">¿Listo para Descargar?</h2>
+    <p style="color: #666; margin-bottom: 1.5rem;">Descarga todo tu trabajo en formato de texto para estudiar para tu examen.</p><button id="download-btn" class="download-button"> <span id="download-text">📥 Descargar Mi Trabajo</span> </button>
+   </section>
+  </div>
+  <script>
+    const defaultConfig = {
+      course_title: "Enlatados Procesados Térmicamente",
+      instructor_name: "Guía Interactiva para Estudiantes",
+      download_button_text: "📥 Descargar Mi Trabajo"
+    };
+
+    const sections = [
+      { id: 'm1-s1', title: '1.1 Introducción y Definición' },
+      { id: 'm1-s2', title: '1.2 El Envase: La Primera Línea de Defensa' },
+      { id: 'm1-s3', title: '1.3 Protección Interna: Esmaltes y Lacas' },
+      { id: 'm1-s4', title: '1.4 Clasificación Comercial (El punto crítico del pH)' },
+      { id: 'm1-s5', title: '1.5 Causas de Alteración' },
+      { id: 'm2-s1', title: '2.1 Parámetros Térmicos' },
+      { id: 'm2-s2', title: '2.2 Parámetros Fisicoquímicos' },
+      { id: 'm2-s3', title: '2.3 Parámetros del Envase' },
+      { id: 'm3-s1', title: '3.1 Análisis del Problema' },
+      { id: 'm3-s2', title: '3.2 Microorganismos de Riesgo' },
+      { id: 'm3-s3', title: '3.3 Cálculo del Valor F₀' },
+      { id: 'm3-s4', title: '3.4 Acciones Correctivas' },
+      { id: 'm3-s5', title: '3.5 Conclusiones del Caso' }
+    ];
+
+    let allData = [];
+    let saveTimeouts = {};
+
+    const dataHandler = {
+      onDataChanged(data) {
+        allData = data;
+        
+        sections.forEach(section => {
+          const textarea = document.getElementById(section.id);
+          if (textarea) {
+            const record = data.find(d => d.section_id === section.id);
+            if (record && textarea.value !== record.content) {
+              textarea.value = record.content || '';
+            }
+          }
+        });
+
+        updateCompletionStatus();
+      }
+    };
+
+    async function initializeApp() {
+      const initResult = await window.dataSdk.init(dataHandler);
+      
+      if (!initResult.isOk) {
+        console.error('Error initializing data SDK');
+        return;
+      }
+
+      sections.forEach(section => {
+        const textarea = document.getElementById(section.id);
+        if (textarea) {
+          textarea.addEventListener('input', (e) => handleTextChange(section.id, section.title, e.target.value));
+        }
+      });
+
+      document.getElementById('download-btn').addEventListener('click', downloadWork);
+    }
+
+    async function handleTextChange(sectionId, title, content) {
+      if (saveTimeouts[sectionId]) {
+        clearTimeout(saveTimeouts[sectionId]);
+      }
+
+      saveTimeouts[sectionId] = setTimeout(async () => {
+        const existingRecord = allData.find(d => d.section_id === sectionId);
+        
+        const saveIndicator = document.getElementById(`save-${sectionId}`);
+        if (saveIndicator) {
+          saveIndicator.classList.remove('show');
+        }
+
+        if (existingRecord) {
+          existingRecord.content = content;
+          existingRecord.timestamp = new Date().toISOString();
+          const result = await window.dataSdk.update(existingRecord);
+          
+          if (result.isOk && saveIndicator) {
+            saveIndicator.classList.add('show');
+            setTimeout(() => saveIndicator.classList.remove('show'), 2000);
+          }
+        } else {
+          const result = await window.dataSdk.create({
+            section_id: sectionId,
+            title: title,
+            content: content,
+            timestamp: new Date().toISOString()
+          });
+          
+          if (result.isOk && saveIndicator) {
+            saveIndicator.classList.add('show');
+            setTimeout(() => saveIndicator.classList.remove('show'), 2000);
+          }
+        }
+      }, 1000);
+    }
+
+    function updateCompletionStatus() {
+      const completedSections = allData.filter(d => d.content && d.content.trim().length > 0).length;
+      const completionText = document.getElementById('completion-text');
+      if (completionText) {
+        completionText.textContent = `Secciones completadas: ${completedSections} de ${sections.length}`;
+      }
+    }
+
+    function downloadWork() {
+      const downloadBtn = document.getElementById('download-btn');
+      const downloadText = document.getElementById('download-text');
+      
+      if (!downloadBtn || !downloadText) return;
+      
+      downloadBtn.disabled = true;
+      const originalText = downloadText.textContent;
+      downloadText.innerHTML = 'Preparando descarga... <span class="loading"></span>';
+
+      setTimeout(() => {
+        let content = '═══════════════════════════════════════════════════════════\n';
+        content += '          ENLATADOS PROCESADOS TÉRMICAMENTE\n';
+        content += '          Trabajo Desarrollado por el Estudiante\n';
+        content += '═══════════════════════════════════════════════════════════\n\n';
+        content += `Fecha de generación: ${new Date().toLocaleString('es-MX')}\n\n`;
+
+        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+        content += '  📚 MÓDULO 1: FUNDAMENTOS TEÓRICOS DEL ENLATADO\n';
+        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+        sections.slice(0, 5).forEach(section => {
+          const record = allData.find(d => d.section_id === section.id);
+          content += `\n▸ ${section.title}\n`;
+          content += '─────────────────────────────────────────────────────────\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]\n';
+          content += '\n';
+        });
+
+        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+        content += '  📋 MÓDULO 2: LISTA MAESTRA DE PARÁMETROS DE CONTROL\n';
+        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+        sections.slice(5, 8).forEach(section => {
+          const record = allData.find(d => d.section_id === section.id);
+          content += `\n▸ ${section.title}\n`;
+          content += '─────────────────────────────────────────────────────────\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]\n';
+          content += '\n';
+        });
+
+        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+        content += '  🔬 MÓDULO 3: CASO PRÁCTICO - "LA CAÍDA DE LA RETORTA"\n';
+        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+        content += 'ESCENARIO: Frijoles refritos (pH > 4.6)\n';
+        content += 'PROBLEMA: Durante la esterilización programada a 121°C, la temperatura\n';
+        content += 'cae a 115°C por 8 minutos debido a una falta de vapor.\n\n';
+
+        sections.slice(8).forEach(section => {
+          const record = allData.find(d => d.section_id === section.id);
+          content += `\n▸ ${section.title}\n`;
+          content += '─────────────────────────────────────────────────────────\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]\n';
+          content += '\n';
+        });
+
+        content += '\n═══════════════════════════════════════════════════════════\n';
+        content += '                   FIN DEL DOCUMENTO\n';
+        content += '═══════════════════════════════════════════════════════════\n';
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Enlatados_Termicamente_Procesados_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        downloadBtn.disabled = false;
+        downloadText.textContent = originalText;
+      }, 800);
+    }
+
+    async function onConfigChange(config) {
+      const courseTitle = document.getElementById('course-title');
+      const instructorName = document.getElementById('instructor-name');
+      const downloadText = document.getElementById('download-text');
+
+      if (courseTitle) {
+        courseTitle.textContent = config.course_title || defaultConfig.course_title;
+      }
+      if (instructorName) {
+        instructorName.textContent = config.instructor_name || defaultConfig.instructor_name;
+      }
+      if (downloadText) {
+        downloadText.textContent = config.download_button_text || defaultConfig.download_button_text;
+      }
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["course_title", config.course_title || defaultConfig.course_title],
+          ["instructor_name", config.instructor_name || defaultConfig.instructor_name],
+          ["download_button_text", config.download_button_text || defaultConfig.download_button_text]
+        ])
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a7c99df010ddb47',t:'MTc2NDY5NzEzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
