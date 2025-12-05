@@ -242,7 +242,7 @@
     <p>📖 <strong>Instrucciones:</strong> Lee la información del libro y las referencias del profesor, luego completa cada sección con tus propias palabras. Tu progreso se guarda automáticamente.</p>
    </div>
    <div class="completion-status">
-    <p class="completion-text" id="completion-text">Secciones completadas: 0 de 14</p>
+    <p class="completion-text" id="completion-text">Secciones completadas: 0 de 13</p>
    </div>
    <main id="modules-container"><!-- Módulo 1 -->
     <article class="module">
@@ -482,72 +482,77 @@
       
       downloadBtn.disabled = true;
       const originalText = downloadText.textContent;
-      downloadText.innerHTML = 'Preparando descarga... <span class="loading"></span>';
+      downloadText.innerHTML = 'Preparando descarga...';
 
       setTimeout(() => {
-        let content = '═══════════════════════════════════════════════════════════\n';
-        content += '          ENLATADOS PROCESADOS TÉRMICAMENTE\n';
+        let content = '===============================================================\n';
+        content += '          ENLATADOS PROCESADOS TERMICAMENTE\n';
         content += '          Trabajo Desarrollado por el Estudiante\n';
-        content += '═══════════════════════════════════════════════════════════\n\n';
-        content += `Fecha de generación: ${new Date().toLocaleString('es-MX')}\n\n`;
+        content += '===============================================================\n\n';
+        content += 'Fecha de generacion: ' + new Date().toLocaleString('es-MX') + '\n\n';
 
-        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
-        content += '  📚 MÓDULO 1: FUNDAMENTOS TEÓRICOS DEL ENLATADO\n';
-        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+        content += '\n---------------------------------------------------------------\n';
+        content += '  MODULO 1: FUNDAMENTOS TEORICOS DEL ENLATADO\n';
+        content += '---------------------------------------------------------------\n\n';
 
         sections.slice(0, 5).forEach(section => {
           const record = allData.find(d => d.section_id === section.id);
-          content += `\n▸ ${section.title}\n`;
-          content += '─────────────────────────────────────────────────────────\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]\n';
-          content += '\n';
+          content += '\n> ' + section.title + '\n';
+          content += '---------------------------------------------------------------\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]';
+          content += '\n\n';
         });
 
-        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
-        content += '  📋 MÓDULO 2: LISTA MAESTRA DE PARÁMETROS DE CONTROL\n';
-        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+        content += '\n---------------------------------------------------------------\n';
+        content += '  MODULO 2: LISTA MAESTRA DE PARAMETROS DE CONTROL\n';
+        content += '---------------------------------------------------------------\n\n';
 
         sections.slice(5, 8).forEach(section => {
           const record = allData.find(d => d.section_id === section.id);
-          content += `\n▸ ${section.title}\n`;
-          content += '─────────────────────────────────────────────────────────\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]\n';
-          content += '\n';
+          content += '\n> ' + section.title + '\n';
+          content += '---------------------------------------------------------------\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]';
+          content += '\n\n';
         });
 
-        content += '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
-        content += '  🔬 MÓDULO 3: CASO PRÁCTICO - "LA CAÍDA DE LA RETORTA"\n';
-        content += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+        content += '\n---------------------------------------------------------------\n';
+        content += '  MODULO 3: CASO PRACTICO - "LA CAIDA DE LA RETORTA"\n';
+        content += '---------------------------------------------------------------\n\n';
 
         content += 'ESCENARIO: Frijoles refritos (pH > 4.6)\n';
-        content += 'PROBLEMA: Durante la esterilización programada a 121°C, la temperatura\n';
-        content += 'cae a 115°C por 8 minutos debido a una falta de vapor.\n\n';
+        content += 'PROBLEMA: Durante la esterilizacion programada a 121 grados C, la temperatura\n';
+        content += 'cae a 115 grados C por 8 minutos debido a una falta de vapor.\n\n';
 
         sections.slice(8).forEach(section => {
           const record = allData.find(d => d.section_id === section.id);
-          content += `\n▸ ${section.title}\n`;
-          content += '─────────────────────────────────────────────────────────\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]\n';
-          content += '\n';
+          content += '\n> ' + section.title + '\n';
+          content += '---------------------------------------------------------------\n';
+          content += (record && record.content) ? record.content : '[Sin contenido]';
+          content += '\n\n';
         });
 
-        content += '\n═══════════════════════════════════════════════════════════\n';
+        content += '\n===============================================================\n';
         content += '                   FIN DEL DOCUMENTO\n';
-        content += '═══════════════════════════════════════════════════════════\n';
+        content += '===============================================================\n';
 
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Enlatados_Termicamente_Procesados_${new Date().toISOString().split('T')[0]}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Enlatados_Termicamente_Procesados_' + new Date().toISOString().split('T')[0] + '.txt';
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
+        downloadText.textContent = '✓ Descargado';
+        setTimeout(() => {
+          downloadText.textContent = originalText;
+        }, 2500);
+        
         downloadBtn.disabled = false;
-        downloadText.textContent = originalText;
-      }, 800);
+      }, 600);
     }
 
     async function onConfigChange(config) {
@@ -586,5 +591,5 @@
 
     document.addEventListener('DOMContentLoaded', initializeApp);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a7c99df010ddb47',t:'MTc2NDY5NzEzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a94621cf40dfa34',t:'MTc2NDk0NjUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
