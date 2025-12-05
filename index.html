@@ -478,81 +478,115 @@
       const downloadBtn = document.getElementById('download-btn');
       const downloadText = document.getElementById('download-text');
       
-      if (!downloadBtn || !downloadText) return;
+      if (!downloadBtn || !downloadText) {
+        return;
+      }
       
       downloadBtn.disabled = true;
       const originalText = downloadText.textContent;
-      downloadText.innerHTML = 'Preparando descarga...';
+      downloadText.textContent = 'Preparando descarga...';
 
-      setTimeout(() => {
-        let content = '===============================================================\n';
-        content += '          ENLATADOS PROCESADOS TERMICAMENTE\n';
-        content += '          Trabajo Desarrollado por el Estudiante\n';
-        content += '===============================================================\n\n';
-        content += 'Fecha de generacion: ' + new Date().toLocaleString('es-MX') + '\n\n';
+      // Recopilar todo el contenido actual de los textareas
+      let content = '===============================================================\n';
+      content += '          ENLATADOS PROCESADOS TERMICAMENTE\n';
+      content += '          Trabajo Desarrollado por el Estudiante\n';
+      content += '===============================================================\n\n';
+      
+      const now = new Date();
+      const dateStr = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+      const timeStr = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+      content += 'Fecha de generacion: ' + dateStr + ' ' + timeStr + '\n\n';
 
-        content += '\n---------------------------------------------------------------\n';
-        content += '  MODULO 1: FUNDAMENTOS TEORICOS DEL ENLATADO\n';
-        content += '---------------------------------------------------------------\n\n';
+      content += '\n---------------------------------------------------------------\n';
+      content += '  MODULO 1: FUNDAMENTOS TEORICOS DEL ENLATADO\n';
+      content += '---------------------------------------------------------------\n\n';
 
-        sections.slice(0, 5).forEach(section => {
-          const record = allData.find(d => d.section_id === section.id);
-          content += '\n> ' + section.title + '\n';
-          content += '---------------------------------------------------------------\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]';
-          content += '\n\n';
-        });
+      // Módulo 1 - secciones 0 a 4
+      for (let i = 0; i < 5; i++) {
+        const section = sections[i];
+        const textarea = document.getElementById(section.id);
+        const textContent = textarea ? textarea.value.trim() : '';
+        
+        content += '\n> ' + section.title + '\n';
+        content += '---------------------------------------------------------------\n';
+        content += textContent || '[Sin contenido]';
+        content += '\n\n';
+      }
 
-        content += '\n---------------------------------------------------------------\n';
-        content += '  MODULO 2: LISTA MAESTRA DE PARAMETROS DE CONTROL\n';
-        content += '---------------------------------------------------------------\n\n';
+      content += '\n---------------------------------------------------------------\n';
+      content += '  MODULO 2: LISTA MAESTRA DE PARAMETROS DE CONTROL\n';
+      content += '---------------------------------------------------------------\n\n';
 
-        sections.slice(5, 8).forEach(section => {
-          const record = allData.find(d => d.section_id === section.id);
-          content += '\n> ' + section.title + '\n';
-          content += '---------------------------------------------------------------\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]';
-          content += '\n\n';
-        });
+      // Módulo 2 - secciones 5 a 7
+      for (let i = 5; i < 8; i++) {
+        const section = sections[i];
+        const textarea = document.getElementById(section.id);
+        const textContent = textarea ? textarea.value.trim() : '';
+        
+        content += '\n> ' + section.title + '\n';
+        content += '---------------------------------------------------------------\n';
+        content += textContent || '[Sin contenido]';
+        content += '\n\n';
+      }
 
-        content += '\n---------------------------------------------------------------\n';
-        content += '  MODULO 3: CASO PRACTICO - "LA CAIDA DE LA RETORTA"\n';
-        content += '---------------------------------------------------------------\n\n';
+      content += '\n---------------------------------------------------------------\n';
+      content += '  MODULO 3: CASO PRACTICO - "LA CAIDA DE LA RETORTA"\n';
+      content += '---------------------------------------------------------------\n\n';
 
-        content += 'ESCENARIO: Frijoles refritos (pH > 4.6)\n';
-        content += 'PROBLEMA: Durante la esterilizacion programada a 121 grados C, la temperatura\n';
-        content += 'cae a 115 grados C por 8 minutos debido a una falta de vapor.\n\n';
+      content += 'ESCENARIO: Frijoles refritos (pH > 4.6)\n';
+      content += 'PROBLEMA: Durante la esterilizacion programada a 121 grados C,\n';
+      content += 'la temperatura cae a 115 grados C por 8 minutos debido a\n';
+      content += 'una falta de vapor.\n\n';
 
-        sections.slice(8).forEach(section => {
-          const record = allData.find(d => d.section_id === section.id);
-          content += '\n> ' + section.title + '\n';
-          content += '---------------------------------------------------------------\n';
-          content += (record && record.content) ? record.content : '[Sin contenido]';
-          content += '\n\n';
-        });
+      // Módulo 3 - secciones 8 a 12
+      for (let i = 8; i < 13; i++) {
+        const section = sections[i];
+        const textarea = document.getElementById(section.id);
+        const textContent = textarea ? textarea.value.trim() : '';
+        
+        content += '\n> ' + section.title + '\n';
+        content += '---------------------------------------------------------------\n';
+        content += textContent || '[Sin contenido]';
+        content += '\n\n';
+      }
 
-        content += '\n===============================================================\n';
-        content += '                   FIN DEL DOCUMENTO\n';
-        content += '===============================================================\n';
+      content += '\n===============================================================\n';
+      content += '                   FIN DEL DOCUMENTO\n';
+      content += '===============================================================\n';
 
+      // Crear y descargar el archivo
+      try {
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Enlatados_Termicamente_Procesados_' + new Date().toISOString().split('T')[0] + '.txt';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        
+        const fileName = 'Enlatados_Termicos_' + now.getFullYear() + '-' + 
+                        (now.getMonth() + 1) + '-' + now.getDate() + '.txt';
+        a.download = fileName;
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 100);
 
-        downloadText.textContent = '✓ Descargado';
+        downloadText.textContent = 'Descargado correctamente';
         setTimeout(() => {
           downloadText.textContent = originalText;
-        }, 2500);
+          downloadBtn.disabled = false;
+        }, 2000);
         
-        downloadBtn.disabled = false;
-      }, 600);
+      } catch (error) {
+        downloadText.textContent = 'Error en descarga';
+        setTimeout(() => {
+          downloadText.textContent = originalText;
+          downloadBtn.disabled = false;
+        }, 2000);
+      }
     }
 
     async function onConfigChange(config) {
@@ -591,5 +625,5 @@
 
     document.addEventListener('DOMContentLoaded', initializeApp);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a94621cf40dfa34',t:'MTc2NDk0NjUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a95ae94a5836b5a',t:'MTc2NDk2MDEzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
